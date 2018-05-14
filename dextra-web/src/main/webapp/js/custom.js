@@ -1,5 +1,5 @@
 /**
- *  @author Carlos Diego
+ *  @author Mateus Bastos
  *  @since 26/11/2013
  */
 
