@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 		xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:a4j="http://richfaces.org/a4j"
+			xmlns:rich="http://richfaces.org/rich"
+			xmlns:mj="http://mojarra.dev.java.net/mojarra_ext"
+			xmlns:t="http://myfaces.apache.org/tomahawk">
+			
+	<f:loadBundle basename="ApplicationResources" var="bundle"/>
+			
+	<h:head>
+	
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<title>
+			<h:outputText value="#{bundle.tituloAplicacao}"/>
+		</title>
+		
+		
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+	    <meta name="description" content="FOODEXTRA" />
+	    <meta name="keywords" content="Notifications, Admin, Dashboard, Bootstrap3, Sass, transform, CSS3, HTML5, Web design, UI Design, Responsive Dashboard, Responsive Admin, Admin Theme, Best Admin UI, Bootstrap Theme, Wrapbootstrap, Bootstrap, bootstrap.gallery" />
+	    <meta name="author" content="Bootstrap Gallery" />
+	    <link rel="shortcut icon" href="../img/favicon.ico"/>
+	    <link href="../css/bootstrap.min.css" rel="stylesheet"/>
+	    <link href="../css/new.css" rel="stylesheet"/> 
+	    <link href="../css/charts-graphs.css" rel="stylesheet"/>
+	    <link href="../css/barIndicator.css" rel="stylesheet" />
+	    <link href="../fonts/font-awesome.min.css" rel="stylesheet"/>
+	    <link href="../css/main.css" rel="stylesheet"/>
+		
+		<!-- Main Container end -->
+	
+	    <script src="../js/jquery.js"></script>
+	    <script src="../js/bootstrap.min.js"></script>
+	    <script src="../js/jquery.scrollUp.js"></script>
+	    
+	    <!-- Flot Charts -->
+	    <script src="../js/flot/jquery.flot.js"></script>
+	    <script src="../js/flot/jquery.flot.pie.min.js"></script>
+	    <script src="../js/flot/jquery.flot.stack.min.js"></script>
+	    <script src="../js/flot/jquery.flot.tooltip.min.js"></script>
+	    <script src="../js/flot/jquery.flot.orderBar.min.js"></script>
+	    <script src="../js/flot/jquery.flot.resize.min.js"></script>
+	
+	    <script src="../js/flot/custom/index3-pie.js"></script>
+	    <script src="../js/flot/custom/index3-area.js"></script>
+	    <script src="../js/flot/custom/horizontal-index.js"></script>
+	    <script src="../js/flot/custom/realtime-index.js"></script>
+	    <script src="../js/flot/custom/index3-scatter.js"></script>
+	    
+	    <!-- Custom JS -->
+	    <script src="../js/menu.js"></script>
+	
+	    <!-- Sparkline JS -->
+	    <script src="../js/sparkline.js"></script>
+	    
+	    <script src="../js/jquery.easing.1.3.js"></script>
+	    <script src="../js/jquery-barIndicator.js"></script>
+	    <script src="../js/custom-barIndicator.js"></script>
+	    <script src="../js/custom.js"></script>
+	    <script src="../js/cep.js"></script>
+		
+	</h:head>
+
+	<h:body>
+	
+		<rich:popupPanel id="panel_loading" autosized="true" modal="true" style="z-index: 100000;">
+			<table>
+				<tr>
+					<td><h:graphicImage url="../img/ajax-loader.gif" style="border:0px; vertical-align: middle; padding: 5px;" /></td>
+					<td><h:outputText value=" Aguarde..." /></td>
+				</tr>
+			</table>
+		</rich:popupPanel>
+		
+		<a4j:status id="loading" onstart="#{rich:component('panel_loading')}.show();" onstop="#{rich:component('panel_loading')}.hide();" />
+	
+		<h:form class="form-horizontal no-margin" id="formulario">
+
+			<ui:param name="crudBean" value="#{principalBean}" />
+			<t:saveState value="#{crudBean}" />
+			
+			<header>
+		      <h:commandLink action="principal" styleClass="logo">
+		        <img src="../img/logo.png" width="220px" height="40px" alt="Logo"/>
+		      </h:commandLink>
+		      <div class="pull-right">
+		        <ul id="mini-nav" class="clearfix">
+		          <h:panelGroup id="menuUsuarioLogado">
+			          <li class="list-box user-profile">			          
+			          	<a id="drop7" href="#" role="button" style="text-align: right; font-size: 13px;"  data-toggle="dropdown">
+		            		<h:panelGroup layout="block" id="session1">
+			              		<i class="fa fa-user"></i> &nbsp; &nbsp; <b> <h:outputText value="#{sessionScope.loginUsuario.login}" /> </b>
+		            		</h:panelGroup>		            
+			            </a>			            
+		            	            		
+					    <ul class="dropdown-menu server-activity">
+				            <h:panelGroup rendered="#{sessionScope.controleTrocarClinicaProfissional.intValue() == 1}">
+					            <li>
+					              <p><i class="fa fa-cog text-info"></i><span onclick="#{rich:component('panConfiguracao')}.show();">Trocar Clínica / Profissional</span></p>
+					            </li>
+				            </h:panelGroup>
+			              	
+			              	<li>
+				            	<p onclick="document.getElementById('formulario:dadosCadastrais').click();"><i class="fa fa-user text-success"></i> Dados Cadastrais</p>
+				            	<h:commandButton id="dadosCadastrais" action="#{dadosCadastraisBean.preparaDadosCadastrais}" style="display: none;"/>
+				            </li>			              	
+			              	<li>
+			                	<p onclick="document.getElementById('formulario:alterarSenha').click();"><i class="fa fa-fire text-warning"></i> Alterar Senha</p>
+				            	<h:commandButton id="alterarSenha" action="#{alterarSenhaBean.preparaPesquisar}" style="display: none;"/>
+			              	</li>
+			              
+			              	<li>
+			                	<div class="demo-btn-group clearfix" align="center">
+			                  		<h:commandButton action="#{loginBean.logout}"  styleClass="btn btn-primary" value="Logout"/>
+			                	</div>
+			              	</li>
+			            </ul>
+			          </li>
+			      </h:panelGroup>
+		        </ul>
+		      </div>
+	    	</header>
+	    	
+	    	<div class="dashboard-container">
+		      		
+	      		<div class="container">
+	       			
+	       			<h:panelGroup layout="block" id="panelMenu">
+		       			<div id='cssmenu'>
+				          <ul>
+				            <li class='#{sessionScope.flgMenuDsh}'>
+				              <a href='#'><i class="fa fa-dashboard"></i>Dashboard</a>
+				            </li>
+				            <li class='#{sessionScope.flgMenuAgn}'>
+				              <h:commandLink action="#{agendamentoBean.preparaPesquisar}">
+				                <i class="fa fa-calendar"></i>
+				                Agendamento
+				              </h:commandLink>
+				            </li>
+				            <li class='#{sessionScope.flgMenuCfm}'>
+				              <h:commandLink action="#{confirmacaoBean.preparaPesquisar}">
+				                <i class="fa fa-thumbs-o-up"></i>
+				                Confirmações
+				              </h:commandLink>
+				            </li>
+				            <li class='#{sessionScope.flgMenuRcp}'>
+				              <h:commandLink action="#{recepcaoBean.preparaPesquisar}">
+				                <i class="fa fa-bullhorn"></i>
+				                Recepção
+				              </h:commandLink>
+				            </li>
+				            
+				            <h:panelGroup rendered="#{sessionScope.loginUsuario.idGrupo != 3}">
+					            <li class='#{sessionScope.flgMenuAtn}'>			              
+					              <h:commandLink action="#{atendimentoBean.preparaAtendimento}">
+					                <i class="fa fa-stethoscope"></i>
+					                Atendimento
+					              </h:commandLink>
+					            </li>
+				            </h:panelGroup>
+				            
+				            <h:panelGroup rendered="#{sessionScope.loginUsuario.idGrupo != 3}">				            
+					            <li class='#{sessionScope.flgMenuAts}'>			              
+					              <h:commandLink action="#{atestadoBean.preparaPesquisar}">
+					                <i class="fa fa-pencil-square-o"></i>
+					                Atestado
+					              </h:commandLink>
+					            </li>
+				            </h:panelGroup>
+				            
+				            <li class='#{sessionScope.flgMenuPct}'>
+				              <h:commandLink action="#{pacienteBean.preparaPesquisar}">
+				                <i class="fa fa-user"></i>
+				                Paciente
+				              </h:commandLink>
+				            </li>
+				            <li class='#{sessionScope.flgMenuRlt}'>
+				              <a href="#">
+				                <i class="fa fa-file-text-o"></i>Relatórios</a>
+				                <ul>
+				              	 <li><h:commandLink action="#{atendimentoPlanoBean.preparaPesquisar}">Atendimentos por Plano</h:commandLink></li>
+				              	 <li><h:commandLink action="#{atendimentoServicoBean.preparaPesquisar}">Atendimentos por Serviço</h:commandLink></li>
+				              	 <li><h:commandLink action="#{fichaAtendimentoBean.preparaPesquisar}">Ficha de Atendimento</h:commandLink></li>
+				              </ul>
+				            </li>
+				            
+				            <h:panelGroup rendered="#{sessionScope.loginUsuario.idGrupo != 3}">
+					            <li class='#{sessionScope.flgMenuCfg}'>
+					              <a href='#'><i class="fa fa-cogs"></i>Configuração</a>
+					              <ul>
+					              	 <li><h:commandLink action="#{recepcionistaBean.preparaPesquisar}">Recepcionista</h:commandLink></li>
+					              	 <li><h:commandLink action="#{clinicaBean.preparaPesquisar}">Clínica</h:commandLink></li>
+					              	 <li><h:commandLink action="#{horarioBean.preparaHorario}">Horários</h:commandLink></li>
+					              	 <li><h:commandLink action="#{convenioBean.preparaPesquisar}">Convênio</h:commandLink></li>
+					                 <li><h:commandLink action="#{servicoBean.preparaPesquisar}">Serviço</h:commandLink></li>
+					                 <li><h:commandLink action="#{sugestaoBean.preparaPesquisar}">Envie sua Sugestão</h:commandLink></li>
+					              </ul>
+					            </li>
+				            </h:panelGroup>
+				          </ul>
+		        		</div>	
+	        		</h:panelGroup>
+	    
+			        <h:panelGroup layout="block" id="panelSession">
+				        <div class="sub-nav hidden-sm hidden-xs">
+				          <ul>
+				            <li><div class="heading" style="font-weight: bold; padding-left: 10px; font-size: 12px;"> 
+				            	 
+					              	<i class="fa fa-user-md" style="font-size: 13px;" title="Profissional Responsável"></i>  &nbsp; <h:outputText value="#{sessionScope.clinicaProfissional.usuario.nome}" title="Profissional Responsável"/> &nbsp;&nbsp; 
+					              
+					              	<i class="fa fa-home" style="font-size: 13px;" title="Clínica"></i>  &nbsp; <h:outputText style="text-transform: upperCase;" value="#{sessionScope.clinicaProfissional.clinica.desClinica}" title="Clínica"/>
+					             
+								</div>
+							</li>
+				          </ul>
+				          <div class="custom-search hidden-sm hidden-xs" style="color: white; font-size: small;">
+				          	<h:outputText id="lblExpira" value="Sua sessão expira em: " />
+		                	<h:outputText id="contadorSessao"/> 
+				          </div>
+				          
+				        </div>
+			        </h:panelGroup>
+	     
+	        <div class="dashboard-wrapper">	        	
+		        <div class="row">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				    	<div class="widget sales-overview">
+			                <h:panelGroup layout="block" id="comentTela">
+			                <div class="widget-header">
+			                  <div class="title">
+			                    	Dashboard
+			                  </div>
+			                </div>
+                			</h:panelGroup>
+                			<div class="widget-body no-padding">   
+	            				<div class="widget-body">
+	            					<a4j:outputPanel style="width:100%;height:100%;" ajaxRendered="true">
+									    <rich:messages layout="table" globalOnly="true" errorClass="alert alert-danger" infoClass="alert alert-success" warnClass="alert alert-info" id="messages"/>
+									</a4j:outputPanel>
+	            				
+				            		<h:panelGroup layout="block" style="padding: 15px" id="pnFrm">
+				                  		
+				                  		<!-- Inicio Dash -->
+				                  	
+				                  		
+          
+									        <h:panelGroup id="dsh1">
+										    	<div class="row">
+										        	<div class="col-lg-3 col-md-3 col-sm-6">
+										            	<div class="mini-widget">
+										                	<div class="mini-widget-heading clearfix">
+										                  		<div class="pull-left">Agendadas</div>
+										                	</div>
+											                <div class="mini-widget-body clearfix">
+											                <div class="pull-center number" style="text-align: center"><h:outputText value="#{sessionScope.countAgendada}"/></div>
+										                </div>
+										            </div>
+												</div>
+												
+									            <div class="col-lg-3 col-md-3 col-sm-6">
+									              <div class="mini-widget">
+									                <div class="mini-widget-heading clearfix" style="background: #d24cff">
+									                  <div class="pull-left">Presentes</div>
+									                </div>
+									                <div class="mini-widget-body clearfix" style="background: #bf00ff">
+									                  <div class="pull-center number" style="text-align: center"><h:outputText value="#{sessionScope.countPresente}"/></div>
+									                </div>
+								
+									              </div>
+									            </div>
+	           
+									            <div class="col-lg-3 col-md-3 col-sm-6">
+									              <div class="mini-widget">
+									                <div class="mini-widget-heading clearfix" style="background: #d6a512">
+									                  <div class="pull-left">Em Atendimento</div>
+									                </div>
+									                <div class="mini-widget-body clearfix" style="background: #dcb234">
+									                  <div class="pull-center number" style="text-align: center"><h:outputText value="#{sessionScope.countAtendimento}"/></div>
+									                </div>
+									
+									              </div>
+									            </div>
+	            
+									            <div class="col-lg-3 col-md-3 col-sm-6">
+									              <div class="mini-widget">
+									                <div class="mini-widget-heading clearfix" style="background: #40900a">
+									                  <div class="pull-left">Concluídas</div>
+									                </div>
+									                <div class="mini-widget-body clearfix" style="background: #378006">
+									                  <div class="pull-center number" style="text-align: center"><h:outputText value="#{sessionScope.countConcluida}"/></div>
+									                </div>
+									
+									              </div>
+									            </div>
+									          </div>
+								          </h:panelGroup>
+								          <!-- Row ends -->
+				                  	
+				                  		  <h:panelGroup id="dsh2">
+					                  		  <div class="row">
+									              <div class="col-lg-12 col-md-4 col-sm-12 col-sx-12">
+									                <div class="panel panel-default">
+									                  <div class="panel-heading">
+									                    <h4 class="panel-title"><i class="icon ion-clock text-success"></i> Última semana</h4>
+									                  </div>
+									                  <div class="panel-body">
+									                  	
+									                  	
+									                  	
+									                  	
+									                  	
+									                  	
+									                  </div>
+									                </div>
+									              </div>
+								              </div>
+							              </h:panelGroup>
+							              
+							              <h:panelGroup id="dsh3">
+								              <div class="row">
+									              <div class="col-lg-12 col-md-4 col-sm-12 col-sx-12">
+									                <div class="panel panel-default">
+									                  <div class="panel-heading">
+									                    <h4 class="panel-title"><i class="icon ion-clock text-success"></i> Notícias </h4>
+									                  </div>
+									                  <div class="panel-body">								                  	
+									                  	
+									                  	<div class="row">
+										                    <div class="col-md-12 col-sm-4 col-xs-12">
+										                     
+										                      <ul class="imp-status">
+										                        
+										                        <a4j:repeat value="#{principalBean.listaNoticia}" var="noticia">
+										                        
+											                        <li class="clearfix">                          
+											                          <div class="product-details">
+											                            <h5><b> <h:outputText value="#{noticia.desTitulo}"/> </b></h5>
+											                            <span style="font-size: 12px;"><h:outputText value="#{noticia.desNoticia}"/></span>                            
+											                          </div>
+											                        </li>
+										                        
+										                        </a4j:repeat>                         
+										                      </ul>
+										                    </div>
+	                    								</div>
+									                  	
+									                  </div>
+									                </div>
+									              </div>
+								              </div>
+							              </h:panelGroup>
+				                  	
+				                  		<!-- Fim Dash -->
+				                  
+				                  		
+										<a4j:commandButton render="panelSession, menuUsuarioLogado, panelMenu, dsh1" id="conf" value="teste" style="display: none;"/>
+										
+										<rich:popupPanel id="panConfiguracao" styleClass="modal-content" domElementAttachment="form" modal="true" show="#{sessionScope.clinicaProfissional== null}" width="800" height="280" moveable="false">
+											<f:facet name="header">
+												<h:panelGroup>
+													<h:outputText value="Configuração Inicial do Sistema" />
+												</h:panelGroup>
+											</f:facet>
+								
+											<div class="modal-body">
+												<fieldset >			
+																		
+													<div class="box-body">
+										             <div class="form-group">
+										               <label for="inputEmail3" class="col-sm-3 control-label">Profissional:</label>
+										               <div class="col-sm-8">
+										               	<h:selectOneMenu value="#{crudBean.profissional}" styleClass="form-control" converter="simpleIndexConverter" >
+															<t:selectItems var="o" itemValue="#{o}" itemLabel="#{o.nome}" value="#{sessionScope.listaProfissional}" />
+														</h:selectOneMenu>
+										               </div>
+										             </div>
+													</div>
+													
+													<div class="box-body">
+										             <div class="form-group">
+										               <label for="inputEmail3" class="col-sm-3 control-label">Clínica:</label>
+										               <div class="col-sm-8">
+										               	<h:selectOneMenu value="#{crudBean.clinica}" styleClass="form-control" converter="simpleIndexConverter">
+															<t:selectItems var="o" itemValue="#{o}" itemLabel="#{o.desClinica}" value="#{sessionScope.listaClinica}" />
+														</h:selectOneMenu>
+										               </div>
+										             </div>
+													</div>
+													
+													<div class="modal-footer">
+														<a4j:commandButton id="iniciar" styleClass="btn btn-primary" value="Iniciar (I)" accesskey="I" actionListener="#{crudBean.iniciar}" render="panelSession, dsh1, dsh2, dsh3" oncomplete="validaPanel('#{crudBean.msgConfig}');"/>
+														<h:commandButton id="fechar" styleClass="btn btn-default" value="Sair (S)" accesskey="S" action="#{crudBean.redirectLogout}"/>			
+													</div>
+												
+												</fieldset>
+											</div>
+											
+											<script>
+												$( document ).ready(function() {
+												    document.getElementById('formulario:conf').click();
+												});
+											
+												function validaPanel(msg)
+												{
+													if(msg == '')
+													{
+														#{rich:component('panConfiguracao')}.hide();
+													}
+													else
+													{
+														alert(msg);
+													}
+												}
+											</script>
+										</rich:popupPanel>
+		
+		
+										<rich:popupPanel id="panExit" styleClass="modal-content" domElementAttachment="form" modal="true" show="#{sessionScope.controleSemPermissao.intValue() == 1}" width="730" height="230" moveable="false">
+											<f:facet name="header">
+												<h:panelGroup>
+													<h:outputText value="Configuração Inicial do Sistema" />
+												</h:panelGroup>
+											</f:facet>
+								
+											<div class="modal-body">
+												<b>Olá, Boas Vindas!!! <br/>
+												Você encontra-se registrado no sistema, mas a configuração do seu perfil não está completa. <br/>
+												Aguarde alguns instantes ou entre em contato com a administração para finalizar a configuração do seu perfil.</b>
+											</div>
+											
+											<div class="modal-footer">				
+												<h:commandButton id="exit" styleClass="btn btn-default" value="Sair (S)" accesskey="S" action="#{crudBean.redirectLogout}"/>			
+											</div>
+											
+										</rich:popupPanel>
+		
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										<!--  -->
+										
+									</h:panelGroup>
+								</div>
+							</div>
+						</div>
+	            	</div>
+	           	</div>
+           	</div>
+	        
+	        
+        	<footer>
+          		<p>© Desenvolvido por <a href="http://a2dm.com.br" style="font: bold; color: white;" target="_blank"> A2DM</a> - 2017.</p>
+        	</footer>
+	      	</div>
+	    </div>
+	    </h:form>
+
+	</h:body>
+
+</html>

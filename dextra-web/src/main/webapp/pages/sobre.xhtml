@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+   	  xmlns:ui="http://java.sun.com/jsf/facelets"
+  	  xmlns:h="http://java.sun.com/jsf/html"
+   	  xmlns:f="http://java.sun.com/jsf/core"
+   	  xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+	  xmlns:mj="http://mojarra.dev.java.net/mojarra_ext"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<f:loadBundle basename="ApplicationResources" var="bundle"/>
+	
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <title></title>
+        <meta name="description" content=""/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+        <link rel="stylesheet" href="../css/main.css"/>
+
+        <link rel="stylesheet" href="../css/animate.min.css"/>
+        <script src="../js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
+	</h:head>
+    
+    <h:body>
+        <div id="preloader">
+            <div id="status"></div>
+        </div>
+        
+        <div class="wrap about">
+            <div class="two-third  wow fadeInLeft">
+                <h2 class="brn sngl">Sobre</h2>
+                
+                <h:commandLink action="home">
+                	<h5 class="ylw">FooDextra</h5>
+                </h:commandLink> 
+                
+                <p>Somos considerados um dos melhores lugares para lanchar, atraindo todos que almejam um sanduiche diferenciado. </p>
+                <p class="tel"><i class="fa fa-phone" aria-hidden="true"></i>+ 55 19 3256-6722</p>
+            </div>
+            <div class="third wow fadeInRight">
+                <img src="../img/sobre.png"/>
+            </div>
+        </div>
+        
+        <ui:include src="footer.xhtml" />
+        
+        <script src="../js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="../js/main.js"></script>
+        <script src="../js/wow.min.js"></script>
+        <script> new WOW().init(); </script>
+	    
+	    <style type="text/css"> 
+			a:link 
+			{ 
+				text-decoration:none; 
+			} 
+		</style>
+    </h:body>
+    
+</html>

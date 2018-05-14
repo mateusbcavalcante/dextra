@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition	xmlns="http://www.w3.org/1999/xhtml"
+			    xmlns:ui="http://java.sun.com/jsf/facelets"
+			    xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:a4j="http://richfaces.org/a4j"
+				xmlns:rich="http://richfaces.org/rich"
+				xmlns:mj="http://mojarra.dev.java.net/mojarra_ext"
+				xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <title></title>
+        <meta name="description" content=""/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+        <link rel="stylesheet" href="../css/main.css"/>
+
+        <link rel="stylesheet" href="../css/animate.min.css"/>
+        <script src="../js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
+	</h:head>
+	
+	<style>
+        .label {
+            font-weight: bold;
+        }
+        .rf-dg, .rf-dg-c{
+            border:none;
+        }
+        .pbody {
+            width: 180px;
+        }
+        .customizeCenter {
+        	text-align: center;
+        	font-family: 'Lobster', sans-serif;
+        	color: #837972;
+        	size: 16px;
+        	font-weight: 400;
+        	letter-spacing: 2px
+        }
+        .customize {
+        	text-align: left;
+        	font-family: 'Lobster', sans-serif;
+        	color: #837972;
+        	size: 16px;
+        	font-weight: 400;
+        	letter-spacing: 2px
+        }
+        .customizeYellow {
+        	text-align: left;
+        	font-family: 'Lobster', sans-serif;
+        	color: #f6bc13;
+        	size: 16px;
+        	font-weight: 400;
+        	letter-spacing: 2px
+        }
+    </style>
+
+	<ui:param name="crudBean" value="#{cardapioBean}" />
+	
+	<h:form id="contexto">
+		<t:saveState value="#{crudBean.listLanche}" />
+		<t:saveState value="#{crudBean.listIngrediente}" />
+		<t:saveState value="#{crudBean.listPedidoLanche}" />
+		<t:saveState value="#{crudBean.lanche}" />
+		
+        <div id="preloader">
+            <div id="status"></div>
+        </div>
+        
+        <div class="wrap menu">
+            <h2 class="brn wow fadeInCenter">Cardápio</h2>
+           	<h:commandLink action="home" value="Início" style="float: left"/>
+            
+            <ul class="filter wow fadeInUp">
+                <li><a href="#main" class="active">Lanches</a></li>
+                <li><a href="#desserts">Ingredientes</a></li>
+                <li><a href="#customize">Personalizar</a></li>
+                <li><a href="#pedido">Meu Pedido</a></li>
+            </ul>
+            
+			<div class="menu-card wow fadeInUp">
+				<div id="main" class="card">
+					<div class="full main">
+	                    <h3>Lanches</h3>
+	                </div>
+	               
+	               	<rich:list value="#{crudBean.listLanche}" var="item" id="listLanche">
+		                <div class="half">
+		                    <ul>
+		                    	<li>
+		                    		<h:inputText id="quantidade" value="#{item.quantidade}" style="width: 30px; display: initial; text-align: center" maxlength="2">
+		                    			<f:ajax event="blur" listener="#{crudBean.processarPedido(item)}" render=":contexto:panelPedidoLanche"/>
+		                    		</h:inputText>
+		                    		
+		                    		<h:outputText value="#{item.descricao}" style="padding-left: 10px"/>
+		                    		
+		                    		<span class="price">
+		                    			<h:outputText value="R$ "/>
+		                    			<h:outputText value="#{item.strValor}"/>
+		                    		</span>
+		                    		
+		                    		<br />
+		                    		
+		                    		<h:outputText value="#{item.strIngrediente}" style="color: #f6bc13"/>
+		                    	</li>
+		                    </ul>
+		                </div>
+	                </rich:list>
+                </div>
+			
+				<div id="desserts" class="card hidden">
+	                <div class="full main">
+	                    <h3>Ingredientes</h3>
+	                </div>
+	                
+	                <rich:list value="#{crudBean.listIngrediente}" var="item">
+		                <div class="half">
+		                    <ul>
+		                    	<li>
+		                    		<h:outputText value="#{item.descricao}"/>
+		                    		<span class="price">
+		                    			<h:outputText value="R$ "/>
+		                    			<h:outputText value="#{item.strValor}"/>
+		                    		</span>
+		                    	</li>
+		                    </ul>
+		                </div>
+	                </rich:list>
+				</div>
+				
+				<div id="customize" class="card hidden">
+	                <div class="full main">
+	                    <h3>Personalizar</h3>
+	                </div>
+	                
+	                <br />
+	                
+	                <rich:collapsiblePanel id="panelLanche" header="Lanches" expanded="true" switchType="ajax" styleClass="customizeCenter">
+	                	<h:selectOneRadio id="radioLanche" value="#{crudBean.lanche}" converter="simpleIndexConverter" layout="pageDirection" styleClass="customizeYellow">								
+							<t:selectItems var="i" itemValue="#{i}" itemLabel="#{i.descricao}" value="#{crudBean.listLanche}" />
+						</h:selectOneRadio>
+	                </rich:collapsiblePanel>
+					
+					<br />
+					
+					<rich:collapsiblePanel id="panelIngrediente" header="Ingredientes" expanded="true" switchType="ajax" styleClass="customizeCenter">
+						<rich:list value="#{crudBean.listIngrediente}" var="item" style="text-align: left;">
+                    		<h:inputText id="quantidadeIngrediente" value="#{item.quantidade}" style="width: 30px; display: initial; text-align: center" maxlength="2"/>
+                    		<h:outputText value="#{item.descricao}" styleClass="customizeYellow" style="padding-left: 10px"/>
+		                </rich:list>
+					</rich:collapsiblePanel>
+					
+					<h:commandLink class="btn-main smooth wow fadeInUp" data-wow-delay="1s">ADICIONAR
+						<f:ajax event="click" execute="@form" render=":contexto:panelLanche :contexto:panelIngrediente :contexto:panelPedidoLanche" listener="#{cardapioBean.personalizar}"/>
+					</h:commandLink>
+				</div>
+				
+				<div id="pedido" class="card hidden">
+					<rich:panel id="panelPedidoLanche">
+	        			<div class="full main">
+		                    <h3>Meu Pedido</h3>
+		                </div>
+			        
+						<rich:dataGrid value="#{crudBean.listPedidoLanche}" var="item" columns="4" elements="100">
+			                <rich:panel bodyClass="pbody">
+			                    <f:facet name="header">
+			                        <h:outputText value="#{item.lanche.descricao}" styleClass="customizeYellow"/>
+			                    </f:facet>
+			                    
+			                    <h:panelGrid columns="2">
+			                        <h:outputText value="Quantidade:" styleClass="customize"/>
+			                        <h:outputText value="#{item.quantidade}" styleClass="customizeYellow"/>
+			                        
+			                        <h:outputText value="Valor:" styleClass="customize"/>
+			                        <h:outputText value="#{item.strValor}" styleClass="customizeYellow"/>
+			                        
+			                        <h:outputText value="Personalizado:" styleClass="customize"/>
+			                        <h:outputText value="Sim" rendered="#{item.flgPersonalizar == 'S'}" styleClass="customizeYellow"/>
+			                        <h:outputText value="Não" rendered="#{item.flgPersonalizar == 'N'}" styleClass="customizeYellow"/>
+			                        
+			                        <h:outputText value="Promoção:" styleClass="customize"/>
+			                        <h:outputText value="#{item.descricaoPromocao}" rendered="#{item.flgPromocao == 'S'}" styleClass="customizeYellow"/>
+			                        <h:outputText value="Não" rendered="#{item.flgPromocao == 'N'}" styleClass="customizeYellow"/>
+			                    </h:panelGrid>
+			                </rich:panel>
+			                
+			                <f:facet name="footer">
+			                	<hr />
+			                	<h:outputText value="Valor Total: " styleClass="customize"/>
+			                	<h:outputText value="R$ " styleClass="customizeYellow"/>
+			                	<h:outputText value="#{crudBean.strValorPedidoTotal}" styleClass="customizeYellow"/>
+			                </f:facet>
+			            </rich:dataGrid>
+			        </rich:panel>
+				</div>
+			</div>			
+        </div>
+        
+        <ui:include src="footer.xhtml" />
+        
+        <script src="../js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="../js/main.js"></script>
+        <script src="../js/wow.min.js"></script>
+        <script> new WOW().init(); </script>
+        
+        <style type="text/css"> 
+			a:link 
+			{ 
+				text-decoration:none; 
+			} 
+		</style>
+	</h:form>
+</ui:composition>

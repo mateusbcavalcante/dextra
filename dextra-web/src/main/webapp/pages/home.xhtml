@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+   	  xmlns:ui="http://java.sun.com/jsf/facelets"
+  	  xmlns:h="http://java.sun.com/jsf/html"
+   	  xmlns:f="http://java.sun.com/jsf/core"
+   	  xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+	  xmlns:mj="http://mojarra.dev.java.net/mojarra_ext"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+	
+	<f:loadBundle basename="ApplicationResources" var="bundle"/>
+	
+	<h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <title></title>
+        <meta name="description" content=""/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+        <link rel="stylesheet" href="../css/main.css"/>
+        <link rel="stylesheet" href="../css/animate.min.css"/>
+        
+        <script src="../js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
+
+		<title>
+			<h:outputText value="#{bundle.tituloAplicacao}" /> 
+		</title>	
+	</h:head>
+	
+	<h:body>
+        <h:form>
+        <div id="preloader">
+            <div id="status"></div>
+        </div>
+        
+        <div class="hero">
+            <div class="wrap">
+                <nav>
+                    <div class="navi">
+	                    <ul>
+	                        <li><h:commandLink action="sobre" class="smooth"><i class="fa fa-info" aria-hidden="true"></i>Sobre</h:commandLink></li>
+	                    </ul>
+                    </div>
+                </nav>
+                <div class="heading">
+	                <h2 class="wow fadeInRight" data-wow-delay="1s">FOODEXTRA</h2>
+	                <p class="wow fadeInRight" data-wow-delay="1s">Peça o seu lanche. Os melhores sanduíches estão aqui!</p>
+	                <h:commandLink action="#{cardapioBean.preparaPesquisar}" class="btn-main smooth wow fadeInUp" data-wow-delay="1s">CARDÁPIO</h:commandLink>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="wow fadeIn">
+            <copy>Copyright © 2018 by Mateus Bastos Cavalcante. Todos os direitos reservados.</copy>
+            <ul class="social">
+                <li><a href="https://www.linkedin.com/in/mateus-bastos-030aa465/" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+            </ul>
+        </footer>
+        
+        </h:form>
+        
+        <script src="../js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="../js/main.js"></script>
+        <script src="../js/wow.min.js"></script>
+        <script> new WOW().init(); </script>
+	</h:body>
+</html>
