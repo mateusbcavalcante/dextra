@@ -47,7 +47,7 @@ $('.dropdown-toggle').dropdown();
   
 	  editable: false,
 	  
-	  events: { url: "/agn-web/CalendarServlet?idCliPro="+document.getElementById('formulario:idClinicaProfissional').value ,
+	  events: { url: "/dextra-web/CalendarServlet?idCliPro="+document.getElementById('formulario:idClinicaProfissional').value ,
 		  		data: { dtAgn : document.getElementById('formulario:dataCalendario').value }
 		  				
 	  },
